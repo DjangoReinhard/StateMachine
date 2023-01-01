@@ -26,6 +26,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
+#include <QHash>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -53,6 +54,7 @@ public slots:
 
 private:
   Ui::MainWindow *ui;
+  QHash<int, QAction*> actions;
   StateMachine* sm;
   State* s2;
   State* s21;
@@ -61,8 +63,12 @@ private:
   State* s24;
   State* s25;
   State* s26;
+  State* s211;
+  State* s221;
   State* s231;
   State* s232;
+  State* s233;
+  State* s234;
   State* s241;
   State* s242;
   State* s243;
@@ -70,8 +76,7 @@ private:
   State* s245;
   State* s2311;
   State* s2312;
-  State* s2313;
-  State* s2314;
-  State* s2321;
+  State* s2341;
+  State* s2342;
   };
 #endif // MAINWINDOW_H

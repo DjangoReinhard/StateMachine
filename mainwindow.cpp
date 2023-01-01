@@ -27,6 +27,7 @@
 #include "./ui_mainwindow.h"
 #include <StateMachine.h>
 #include <HistoryState.h>
+#include <OrphanState.h>
 #include <StateTransition.h>
 #include <HistoryStateTransition.h>
 #include <QPushButton>
@@ -45,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
  , s26(nullptr)
  , s231(nullptr)
  , s232(nullptr)
+ , s233(nullptr)
+ , s234(nullptr)
  , s241(nullptr)
  , s242(nullptr)
  , s243(nullptr)
@@ -52,9 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
  , s245(nullptr)
  , s2311(nullptr)
  , s2312(nullptr)
- , s2313(nullptr)
- , s2314(nullptr)
- , s2321(nullptr)
+ , s2341(nullptr)
+ , s2342(nullptr)
   {
   ui->setupUi(this);
   createStateMachine();
@@ -65,9 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
   delete ui;
-  delete s2321;
-  delete s2314;
-  delete s2313;
+  delete s2342;
+  delete s2341;
   delete s2312;
   delete s2311;
   delete s241;
@@ -75,6 +76,9 @@ MainWindow::~MainWindow() {
   delete s243;
   delete s244;
   delete s245;
+  delete s232;
+  delete s233;
+  delete s234;
   delete s26;
   delete s25;
   delete s24;
@@ -91,6 +95,8 @@ void MainWindow::connectUI() {
   connect(ui->pb22,   &QPushButton::clicked, sm, [=]{ sm->dispatch(22); });
   connect(ui->pb23,   &QPushButton::clicked, sm, [=]{ sm->dispatch(23); });
   connect(ui->pb25,   &QPushButton::clicked, sm, [=]{ sm->dispatch(25); });
+  connect(ui->pb211,  &QPushButton::clicked, sm, [=]{ sm->dispatch(211); });
+  connect(ui->pb221,  &QPushButton::clicked, sm, [=]{ sm->dispatch(221); });
   connect(ui->pb241,  &QPushButton::clicked, sm, [=]{ sm->dispatch(241); });
   connect(ui->pb242,  &QPushButton::clicked, sm, [=]{ sm->dispatch(242); });
   connect(ui->pb243,  &QPushButton::clicked, sm, [=]{ sm->dispatch(243); });
@@ -98,9 +104,11 @@ void MainWindow::connectUI() {
   connect(ui->pb245,  &QPushButton::clicked, sm, [=]{ sm->dispatch(245); });
   connect(ui->pb2311, &QPushButton::clicked, sm, [=]{ sm->dispatch(2311); });
   connect(ui->pb2312, &QPushButton::clicked, sm, [=]{ sm->dispatch(2312); });
-  connect(ui->pb2313, &QPushButton::clicked, sm, [=]{ sm->dispatch(2313); });
-  connect(ui->pb2314, &QPushButton::clicked, sm, [=]{ sm->dispatch(2314); });
-  connect(ui->pb2321, &QPushButton::clicked, sm, [=]{ sm->dispatch(2321); });
+  connect(ui->pb232,  &QPushButton::clicked, sm, [=]{ sm->dispatch(232); });
+  connect(ui->pb233,  &QPushButton::clicked, sm, [=]{ sm->dispatch(233); });
+  connect(ui->pb234,  &QPushButton::clicked, sm, [=]{ sm->dispatch(234); });
+  connect(ui->pb2341, &QPushButton::clicked, sm, [=]{ sm->dispatch(2341); });
+  connect(ui->pb2342, &QPushButton::clicked, sm, [=]{ sm->dispatch(2342); });
 
   connect(s2,  &State::onEntry, this, &MainWindow::s2Properties);
   connect(s23, &State::onEntry, this, &MainWindow::s23Properties);
@@ -110,24 +118,27 @@ void MainWindow::connectUI() {
 void MainWindow::createStateMachine() {
   sm = new StateMachine();
   s2    = new State("S2",  sm);
-  s21   = new State("S21", s2);   // 1
-  s22   = new State("S22", s2);   // 2
-  s23   = new HistoryState("S23", s2);   // 3
-  s24   = new State("S24", s2);
-  s25   = new State("S25", s2);   // 5
-  s26   = new State("S26", s2);   // 9 - error state?!?
-  s231  = new State("S231", s23);
+  s21   = new State("S21", s2);
+  s22   = new State("S22", s2);
+  s23   = new HistoryState("S23", s2);
+  s24   = new State("S24", s2);           // virtual
+  s25   = new State("S25", s2);
+  s26   = new State("S26", s2);
+  s211  = new OrphanState("S211");
+  s221  = new OrphanState("S221");
+  s231  = new State("S231", s23);         // virtual
   s232  = new State("S232", s23);
-  s241  = new State("S241", s24);  // a
-  s242  = new State("S242", s24);  // b
-  s243  = new State("S243", s24);  // c
-  s244  = new State("S244", s24);  // d
-  s245  = new State("S245", s24);  // e
-  s2311 = new State("S2311", s231); // o
-  s2312 = new State("S2312", s231); // p
-  s2313 = new State("S2313", s231); // q
-  s2314 = new State("S2314", s231); // r
-  s2321 = new State("S2321", s231); // z
+  s233  = new State("S233", s23);
+  s234  = new State("S234", s23);
+  s241  = new State("S241", s24);
+  s242  = new State("S242", s24);
+  s243  = new State("S243", s24);
+  s244  = new State("S244", s24);
+  s245  = new State("S245", s24);
+  s2311 = new State("S2311", s231);
+  s2312 = new State("S2312", s231);
+  s2341 = new OrphanState("S2341");
+  s2342 = new State("S2342", s234);
 
   sm->addTransition(2,   s2);
   s2->addTransition(21,  s21);
@@ -142,6 +153,7 @@ void MainWindow::createStateMachine() {
 
   s21->addTransition(22,  s22);
   s21->addTransition(25,  s25);
+  s21->addTransition(211, s211);
   s21->addTransition(241, s241);
   s21->addTransition(242, s242);
   s21->addTransition(243, s243);
@@ -152,17 +164,18 @@ void MainWindow::createStateMachine() {
   s21->addTransition(hst);
   hst = new HistoryStateTransition(2312, s21, s2312, s23);
   s21->addTransition(hst);
-  hst = new HistoryStateTransition(2313, s21, s2313, s23);
+  hst = new HistoryStateTransition(232, s21, s232, s23);
   s21->addTransition(hst);
-  hst = new HistoryStateTransition(2314, s21, s2314, s23);
+  hst = new HistoryStateTransition(233, s21, s233, s23);
   s21->addTransition(hst);
-  hst = new HistoryStateTransition(2321, s21, s2321, s23);
+  hst = new HistoryStateTransition(234, s21, s234, s23);
   s21->addTransition(hst);
   hst = new HistoryStateTransition(23, s21, s23, s23, false);
   s21->addTransition(hst);
 
   s22->addTransition(21,  s21);
   s22->addTransition(25,  s25);
+  s22->addTransition(221, s221);
   s22->addTransition(241, s241);
   s22->addTransition(242, s242);
   s22->addTransition(243, s243);
@@ -172,11 +185,11 @@ void MainWindow::createStateMachine() {
   s22->addTransition(hst);
   hst = new HistoryStateTransition(2312, s22, s2312, s23);
   s22->addTransition(hst);
-  hst = new HistoryStateTransition(2313, s22, s2313, s23);
+  hst = new HistoryStateTransition(232, s22, s232, s23);
   s22->addTransition(hst);
-  hst = new HistoryStateTransition(2314, s22, s2314, s23);
+  hst = new HistoryStateTransition(233, s22, s233, s23);
   s22->addTransition(hst);
-  hst = new HistoryStateTransition(2321, s22, s2321, s23);
+  hst = new HistoryStateTransition(234, s22, s234, s23);
   s22->addTransition(hst);
   hst = new HistoryStateTransition(23, s22, s23, s23, false);
   s22->addTransition(hst);
@@ -185,9 +198,9 @@ void MainWindow::createStateMachine() {
   s23->addTransition(25,   s25);
   s23->addTransition(2311, s2311);
   s23->addTransition(2312, s2312);
-  s23->addTransition(2313, s2313);
-  s23->addTransition(2314, s2314);
-  s23->addTransition(2321, s2321);
+  s23->addTransition(232,  s232);
+  s23->addTransition(233,  s233);
+  s23->addTransition(234,  s234);
   s23->addTransition(241,  s241);
   s23->addTransition(242,  s242);
   s23->addTransition(243,  s243);
@@ -201,14 +214,20 @@ void MainWindow::createStateMachine() {
   s24->addTransition(hst);
   hst = new HistoryStateTransition(2312, s24, s2312, s23);
   s24->addTransition(hst);
-  hst = new HistoryStateTransition(2313, s24, s2313, s23);
+  hst = new HistoryStateTransition(232, s24, s232, s23);
   s24->addTransition(hst);
-  hst = new HistoryStateTransition(2314, s24, s2314, s23);
+  hst = new HistoryStateTransition(233, s24, s233, s23);
   s24->addTransition(hst);
-  hst = new HistoryStateTransition(2321, s24, s2321, s23);
+  hst = new HistoryStateTransition(234, s24, s234, s23);
   s24->addTransition(hst);
   hst = new HistoryStateTransition(23, s24, s23, s23, false);
   s24->addTransition(hst);
+
+  s211->addTransition(21, s21);
+  s221->addTransition(22, s22);
+  s234->addTransition(2341, s2341);
+  s2341->addTransition(2342, s2342);
+  s2342->addTransition(234, s234);
   }
 
 
@@ -216,7 +235,9 @@ void MainWindow::s0Properties(StateTransition* trans) {
   qDebug() << "s0Properties() ...";
   ui->pb2->setEnabled(true);
   ui->pb21->setEnabled(false);
+  ui->pb211->setEnabled(false);
   ui->pb22->setEnabled(false);
+  ui->pb221->setEnabled(false);
   ui->pb23->setEnabled(false);
   ui->pb25->setEnabled(false);
   ui->pb241->setEnabled(false);
@@ -226,9 +247,11 @@ void MainWindow::s0Properties(StateTransition* trans) {
   ui->pb245->setEnabled(false);
   ui->pb2311->setEnabled(false);
   ui->pb2312->setEnabled(false);
-  ui->pb2313->setEnabled(false);
-  ui->pb2314->setEnabled(false);
-  ui->pb2321->setEnabled(false);
+  ui->pb232->setEnabled(false);
+  ui->pb2341->setEnabled(false);
+  ui->pb2342->setEnabled(false);
+  ui->pb233->setEnabled(false);
+  ui->pb234->setEnabled(false);
   }
 
 
@@ -236,7 +259,9 @@ void MainWindow::s2Properties(StateTransition* trans) {
   qDebug() << "s2Properties() ...";
   ui->pb2->setEnabled(true);
   ui->pb21->setEnabled(true);
+  ui->pb211->setEnabled(true);
   ui->pb22->setEnabled(true);
+  ui->pb221->setEnabled(true);
   ui->pb23->setEnabled(true);
   ui->pb25->setEnabled(true);
   ui->pb241->setEnabled(true);
@@ -246,9 +271,11 @@ void MainWindow::s2Properties(StateTransition* trans) {
   ui->pb245->setEnabled(true);
   ui->pb2311->setEnabled(false);
   ui->pb2312->setEnabled(false);
-  ui->pb2313->setEnabled(false);
-  ui->pb2314->setEnabled(false);
-  ui->pb2321->setEnabled(false);
+  ui->pb232->setEnabled(false);
+  ui->pb2341->setEnabled(false);
+  ui->pb2342->setEnabled(false);
+  ui->pb233->setEnabled(false);
+  ui->pb234->setEnabled(false);
   }
 
 
@@ -256,7 +283,9 @@ void MainWindow::s23Properties(StateTransition* trans) {
   qDebug() << "s23Properties() ...";
   ui->pb2->setEnabled(true);
   ui->pb21->setEnabled(true);
+  ui->pb211->setEnabled(true);
   ui->pb22->setEnabled(true);
+  ui->pb221->setEnabled(true);
   ui->pb23->setEnabled(true);
   ui->pb25->setEnabled(true);
   ui->pb241->setEnabled(true);
@@ -266,7 +295,9 @@ void MainWindow::s23Properties(StateTransition* trans) {
   ui->pb245->setEnabled(true);
   ui->pb2311->setEnabled(true);
   ui->pb2312->setEnabled(true);
-  ui->pb2313->setEnabled(true);
-  ui->pb2314->setEnabled(true);
-  ui->pb2321->setEnabled(true);
+  ui->pb232->setEnabled(true);
+  ui->pb2341->setEnabled(true);
+  ui->pb2342->setEnabled(true);
+  ui->pb233->setEnabled(true);
+  ui->pb234->setEnabled(true);
   }

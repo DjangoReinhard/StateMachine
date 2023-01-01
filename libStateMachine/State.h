@@ -60,6 +60,7 @@ public:
 
   void addTransition(int st, State* targetState);
   void addTransition(StateTransition* trans);
+  bool hasChildState(State* state);
   void setPredecessor(State* state);
 
   QString name() const;

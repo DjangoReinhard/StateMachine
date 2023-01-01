@@ -75,22 +75,51 @@ void State::addTransition(StateTransition* trans) {
  */
 State* State::executeTransition(StateTransition* trans) {
   assert(trans != nullptr);
+  QList<State*>* states = new QList<State*>();
+  State* dst = trans->targetState();
+  State* tmp = this;
 
-  qDebug() << "\tleave state " << trans->sourceState()->name();
-  // vomits exit signal of last state
-  trans->sourceState()->leaveState(trans);
+  // find all ancestor states that will be left too
+  while (tmp && !tmp->hasChildState(dst)) {
+        states->append(tmp);
+        tmp = tmp->parentState;
+        }
+  // vomit signals for all left states
+  for (int i=0; i < states->size(); ++i) {
+      qDebug() << "\tleave state " << states->at(i)->name();
+      states->at(i)->leaveState(trans);
+      }
+  states->clear();
 
-  //TODO: what ever needs to be done for transition/animation/...
+  /*
+   * real transition processing ...
+   */
   HistoryState* hs = dynamic_cast<HistoryState*>(trans->targetState());
 
   if (hs) setSeen(hs);
-
   // remember state for those children, that wants to come back
   trans->targetState()->setPredecessor(this);
 
-  qDebug() << "\tenter state " << trans->targetState()->name();
-  // vomits enter signal of new state
-  trans->targetState()->enterState(trans);
+
+  //TODO: what ever needs to be done for transition/animation/...
+
+
+  /*
+   * find all states between targetState and common ancestor
+   */
+  State* ancestor = tmp;
+
+  tmp = dst;
+  while (tmp != ancestor) {
+        states->append(tmp);
+        tmp = tmp->parentState;
+        }
+  for (int i=states->size() - 1; i >= 0; --i) {
+      qDebug() << "\tenter state " << states->at(i)->name();
+      // vomits enter signal of each new state
+      states->at(i)->enterState(trans);
+      }
+  delete states;
 
   return trans->targetState();
   }
@@ -115,6 +144,23 @@ StateTransition* State::handleEvent(const StateRequestEvent& e) {
      return nullptr;
      }
   return transitions[e.code()];
+  }
+
+
+/**
+ * @brief State::hasChildState - determines, whether given state is a child state
+ *                               of this state
+ * @param   state - state to check
+ * @return  true if state is descendant of ourself
+ */
+bool State::hasChildState(State *state) {
+  if (!state) return false;
+  State* tmp = state;
+
+  while ((tmp = tmp->parentState)) {
+        if (tmp == this) return true;
+        }
+  return false;
   }
 
 

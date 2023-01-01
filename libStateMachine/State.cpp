@@ -80,7 +80,7 @@ State* State::executeTransition(StateTransition* trans) {
   State* tmp = this;
 
   // find all ancestor states that will be left too
-  while (tmp && !tmp->hasChildState(dst)) {
+  while (tmp && !(tmp == dst || tmp->hasChildState(dst))) {
         states->append(tmp);
         tmp = tmp->parentState;
         }

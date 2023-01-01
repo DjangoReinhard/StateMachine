@@ -27,6 +27,8 @@ add_library(StateMachine STATIC
             State.cpp
             StateTransition.h
             StateTransition.cpp
+            EndingState.h
+            EndingState.cpp
             HistoryState.h
             HistoryState.cpp
             HistoryStateTransition.h

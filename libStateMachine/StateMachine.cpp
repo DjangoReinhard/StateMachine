@@ -25,6 +25,7 @@
  */
 #include "StateMachine.h"
 #include "StateTransition.h"
+#include "EndingState.h"
 #include <QDebug>
 #include <stdexcept>
 
@@ -82,7 +83,16 @@ void StateMachine::dispatch(const StateRequestEvent& e) {
      const QString& n1 = current->name();
      bool check = next->isValid();
 
-     if (n0 != n1 && check) current = current->executeTransition(next);
+     if (n0 != n1 && check) {
+        current = current->executeTransition(next);
+        EndingState* es = dynamic_cast<EndingState*>(current);
+
+        if (es && current->parentState) {
+           StateTransition tmp(0, current, current->parentState);
+
+           current = current->executeTransition(&tmp);
+           }
+        }
      }
   predecessor = nullptr; // as StateMachine is a State as well, ensure, that we
                          // never have a predecessor!

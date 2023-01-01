@@ -84,6 +84,7 @@ protected:
 private:
   QString stateName;
   State*  parentState;
+  friend class StateMachine;
   };
 #endif
 

@@ -26,6 +26,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <StateMachine.h>
+#include <EndingState.h>
 #include <HistoryState.h>
 #include <OrphanState.h>
 #include <StateTransition.h>
@@ -138,7 +139,7 @@ void MainWindow::createStateMachine() {
   s2311 = new State("S2311", s231);
   s2312 = new State("S2312", s231);
   s2341 = new OrphanState("S2341");
-  s2342 = new State("S2342", s234);
+  s2342 = new EndingState("S2342", s234);
 
   sm->addTransition(2,   s2);
   s2->addTransition(21,  s21);

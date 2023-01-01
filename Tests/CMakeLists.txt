@@ -4,6 +4,7 @@ project(BasicsTests LANGUAGES CXX)
 project(ChildTests LANGUAGES CXX)
 project(HistoryTests LANGUAGES CXX)
 project(OrphanTests LANGUAGES CXX)
+project(EndingTests LANGUAGES CXX)
 
 enable_testing()
 
@@ -62,4 +63,12 @@ target_link_libraries(OrphanTests
                       PRIVATE StateMachine
                       )
 
-
+add_executable(EndingTests
+               EndingTests.cpp
+               )
+add_test(NAME EndingTests COMMAND EndingTests)
+target_include_directories(EndingTests PRIVATE ../libStateMachine)
+target_link_libraries(EndingTests
+                      PRIVATE Qt${QT_VERSION_MAJOR}::Test
+                      PRIVATE StateMachine
+                      )

@@ -72,18 +72,18 @@ signals:
   void onExit(StateTransition* trans);
 
 protected:
-  bool hasChildState(State* state);
-  void setPredecessor(State* state);
+  bool         hasChildState(State* state);
+  void         setPredecessor(State* state);
   virtual void enterState(StateTransition* trans);
   virtual void leaveState(StateTransition* trans);
   virtual void setSeen(State* state);
   virtual void setUnSeen(State* state);
-  State*  predecessor;
+  State*                       predecessor;
+  QHash<int, StateTransition*> transitions;
 
 private:
   QString stateName;
   State*  parentState;
-  QHash<int, StateTransition*> transitions;
   };
 #endif
 

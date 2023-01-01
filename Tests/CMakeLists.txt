@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(BasicsTests LANGUAGES CXX)
 project(ChildTests LANGUAGES CXX)
+project(HistoryTests LANGUAGES CXX)
+project(OrphanTests LANGUAGES CXX)
 
 enable_testing()
 
@@ -46,6 +48,16 @@ add_executable(HistoryTests
 add_test(NAME HistoryTests COMMAND HistoryTests)
 target_include_directories(HistoryTests PRIVATE ../libStateMachine)
 target_link_libraries(HistoryTests
+                      PRIVATE Qt${QT_VERSION_MAJOR}::Test
+                      PRIVATE StateMachine
+                      )
+
+add_executable(OrphanTests
+               OrphanTests.cpp
+               )
+add_test(NAME OrphanTests COMMAND OrphanTests)
+target_include_directories(OrphanTests PRIVATE ../libStateMachine)
+target_link_libraries(OrphanTests
                       PRIVATE Qt${QT_VERSION_MAJOR}::Test
                       PRIVATE StateMachine
                       )

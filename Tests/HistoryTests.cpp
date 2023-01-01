@@ -42,6 +42,7 @@ private slots:
 
   void positive_Test_should_PASS();
   void negative_Test_should_PASS();
+  void ensure_clear_works();
 
 private:
   StateMachine* sm;
@@ -82,40 +83,70 @@ void HistoryTests::cleanup() {
 
 
 void HistoryTests::positive_Test_should_PASS() {
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(21));
-  QCOMPARE(sm->currentState(), "S21");
+  QCOMPARE(sm->currentState()->name(), "S21");
   sm->dispatch(StateRequestEvent(1));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(22));
-  QCOMPARE(sm->currentState(), "S22");
+  QCOMPARE(sm->currentState()->name(), "S22");
   sm->dispatch(StateRequestEvent(1));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(23));
-  QCOMPARE(sm->currentState(), "S23");
+  QCOMPARE(sm->currentState()->name(), "S23");
   sm->dispatch(StateRequestEvent(1));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(24));
-  QCOMPARE(sm->currentState(), "S24");
+  QCOMPARE(sm->currentState()->name(), "S24");
   }
 
 
 void HistoryTests::negative_Test_should_PASS() {
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(24));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(21));
-  QCOMPARE(sm->currentState(), "S21");
+  QCOMPARE(sm->currentState()->name(), "S21");
   sm->dispatch(StateRequestEvent(1));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(9));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(23));
-  QCOMPARE(sm->currentState(), "S23");
+  QCOMPARE(sm->currentState()->name(), "S23");
   sm->dispatch(StateRequestEvent(1));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(24));
-  QCOMPARE(sm->currentState(), "S24");
+  QCOMPARE(sm->currentState()->name(), "S24");
+  }
+
+
+void HistoryTests::ensure_clear_works() {
+  QCOMPARE(sm->currentState()->name(), "S1");
+  sm->dispatch(StateRequestEvent(24));
+  QCOMPARE(sm->currentState()->name(), "S1");
+  sm->dispatch(StateRequestEvent(1));
+  QCOMPARE(sm->currentState()->name(), "S1");
+  sm->dispatch(StateRequestEvent(23));
+  QCOMPARE(sm->currentState()->name(), "S23");
+  sm->dispatch(StateRequestEvent(1));
+  QCOMPARE(sm->currentState()->name(), "S1");
+  sm->dispatch(StateRequestEvent(24));
+  QCOMPARE(sm->currentState()->name(), "S24");
+  sm->dispatch(StateRequestEvent(1));
+  QCOMPARE(sm->currentState()->name(), "S1");
+  sm->dispatch(StateRequestEvent(24));
+  QCOMPARE(sm->currentState()->name(), "S24");
+  sm->dispatch(StateRequestEvent(1));
+  QCOMPARE(sm->currentState()->name(), "S1");
+  StateTransition* t = sm->currentState()->handleEvent(23);
+  HistoryState* hs = dynamic_cast<HistoryState*>(t->targetState());
+
+  QCOMPARE(t->sourceState()->name(), "S1");
+  QCOMPARE(t->targetState()->name(), "S23");
+  hs->reset();
+
+  sm->dispatch(StateRequestEvent(24));
+  QCOMPARE(sm->currentState()->name(), "S1");
   }
 
 

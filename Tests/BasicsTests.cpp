@@ -73,26 +73,26 @@ void BasicsTests::cleanupTestCase() {
 
 
 void BasicsTests::positive_Test_should_PASS() {
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(2));
-  QCOMPARE(sm->currentState(), "S2");
+  QCOMPARE(sm->currentState()->name(), "S2");
   sm->dispatch(StateRequestEvent(3));
-  QCOMPARE(sm->currentState(), "S3");
+  QCOMPARE(sm->currentState()->name(), "S3");
   sm->dispatch(StateRequestEvent(1));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   }
 
 
 void BasicsTests::negative_Test_should_PASS() {
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(3));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(1));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(0));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   sm->dispatch(StateRequestEvent(9));
-  QCOMPARE(sm->currentState(), "S1");
+  QCOMPARE(sm->currentState()->name(), "S1");
   }
 
 

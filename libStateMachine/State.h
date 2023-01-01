@@ -60,8 +60,6 @@ public:
 
   void addTransition(int st, State* targetState);
   void addTransition(StateTransition* trans);
-  bool hasChildState(State* state);
-  void setPredecessor(State* state);
 
   QString name() const;
 
@@ -74,9 +72,12 @@ signals:
   void onExit(StateTransition* trans);
 
 protected:
+  bool hasChildState(State* state);
+  void setPredecessor(State* state);
   virtual void enterState(StateTransition* trans);
   virtual void leaveState(StateTransition* trans);
   virtual void setSeen(State* state);
+  virtual void setUnSeen(State* state);
   State*  predecessor;
 
 private:

@@ -40,8 +40,8 @@ StateMachine::~StateMachine() {
   }
 
 
-QString StateMachine::currentState() const {
-  return current->name();
+State* StateMachine::currentState() const {
+  return current;
   }
 
 
@@ -53,14 +53,20 @@ void StateMachine::setInitialState(State* s) {
 bool StateMachine::haveSeen(State *state) const {
   bool rv = history.contains(state);
 
-  qDebug() << "\tstate" << state->name() << "has" << (rv ? "" : "NOT") << "been seen";
+  qDebug() << "\t= state" << state->name() << "has" << (rv ? "" : "NOT") << "been seen";
   return rv;
   }
 
 
 void StateMachine::setSeen(State *state) {
-  qDebug() << "\tremember state" << state->name() << "as seen!";
+  qDebug() << "\t> remember state" << state->name() << "as seen!";
   history.insert(state);
+  }
+
+
+void StateMachine::setUnSeen(State *state) {
+  qDebug() << "\t< remove state" << state->name() << "from history!";
+  if (history.contains(state)) history.remove(state);
   }
 
 

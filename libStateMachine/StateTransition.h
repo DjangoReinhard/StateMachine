@@ -43,13 +43,15 @@ public:
 
   virtual bool isValid() const;
 
+  int    eventCode() const;
   State* sourceState();
   State* targetState();
-  int    eventCode() const;
+
+protected:
+  State* source;
+  State* target;
 
 private:
   int    code;
-  State* source;
-  State* target;
   };
 #endif // STATETRANSITION_H

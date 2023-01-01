@@ -33,3 +33,8 @@ HistoryState::HistoryState(const QString name, State *parentState, QObject *pare
 
 HistoryState::~HistoryState() {
   }
+
+
+void HistoryState::reset() {
+  setUnSeen(this);
+  }

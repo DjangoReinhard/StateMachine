@@ -170,13 +170,9 @@ QString State::name() const {
 
 
 bool State::haveSeen(State *state) const {
+  //route function call to StateMachine
   if (parentState) return parentState->haveSeen(state);
   return false;
-  }
-
-
-void State::setSeen(State* state) {
-  if (parentState) parentState->setSeen(state);
   }
 
 
@@ -184,6 +180,17 @@ void State::setPredecessor(State *state) {
   predecessor = state;
   }
 
+
+void State::setSeen(State* state) {
+  //route function call to StateMachine
+  if (parentState) parentState->setSeen(state);
+  }
+
+
+void State::setUnSeen(State* state) {
+  //route function call to StateMachine
+  if (parentState) parentState->setUnSeen(state);
+  }
 
 void State::enterState(StateTransition* trans) {
   emit onEntry(trans);

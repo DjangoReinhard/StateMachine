@@ -76,26 +76,26 @@ void ChildTests::cleanupTestCase() {
 
 
 void ChildTests::positive_Test_should_PASS() {
-  QCOMPARE(sm->currentState(), "S11");
+  QCOMPARE(sm->currentState()->name(), "S11");
   sm->dispatch(StateRequestEvent(21));
-  QCOMPARE(sm->currentState(), "S21");
+  QCOMPARE(sm->currentState()->name(), "S21");
   sm->dispatch(StateRequestEvent(31));
-  QCOMPARE(sm->currentState(), "S31");
+  QCOMPARE(sm->currentState()->name(), "S31");
   sm->dispatch(StateRequestEvent(11));
-  QCOMPARE(sm->currentState(), "S11");
+  QCOMPARE(sm->currentState()->name(), "S11");
   }
 
 
 void ChildTests::negative_Test_should_PASS() {
-  QCOMPARE(sm->currentState(), "S11");
+  QCOMPARE(sm->currentState()->name(), "S11");
   sm->dispatch(StateRequestEvent(31));
-  QCOMPARE(sm->currentState(), "S11");
+  QCOMPARE(sm->currentState()->name(), "S11");
   sm->dispatch(StateRequestEvent(11));
-  QCOMPARE(sm->currentState(), "S11");
+  QCOMPARE(sm->currentState()->name(), "S11");
   sm->dispatch(StateRequestEvent(0));
-  QCOMPARE(sm->currentState(), "S11");
+  QCOMPARE(sm->currentState()->name(), "S11");
   sm->dispatch(StateRequestEvent(9));
-  QCOMPARE(sm->currentState(), "S11");
+  QCOMPARE(sm->currentState()->name(), "S11");
   }
 
 

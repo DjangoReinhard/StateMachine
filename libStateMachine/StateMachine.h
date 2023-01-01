@@ -42,13 +42,18 @@ public:
   void dispatch(const StateRequestEvent& e);
   void setInitialState(State* state);
 
-  virtual bool haveSeen(State* state) const override;
-  virtual void setSeen(State* state);
+  virtual State* currentState() const;
 
-  virtual QString currentState() const;
+protected:
+  virtual bool haveSeen(State* state) const override;
+  virtual void setSeen(State* state) override;
+  virtual void setUnSeen(State* state) override;
 
 private:
   State*       current;
   QSet<State*> history;
+//  friend class ChildTests;
+//  friend class BasicsTests;
+//  friend class HistoryTests;
   };
 #endif

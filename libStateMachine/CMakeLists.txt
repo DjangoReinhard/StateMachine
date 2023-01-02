@@ -35,6 +35,8 @@ add_library(StateMachine STATIC
             HistoryStateTransition.cpp
             OrphanState.h
             OrphanState.cpp
+            ReturnState.h
+            ReturnState.cpp
             StateMachine.h
             StateMachine.cpp
             ${TS_FILES}

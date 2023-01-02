@@ -51,6 +51,7 @@ public slots:
   void s0Properties(StateTransition* trans);
   void s2Properties(StateTransition* trans);
   void s23Properties(StateTransition* trans);
+  void toggleReturnState(bool active);
 
 private:
   Ui::MainWindow *ui;
@@ -63,6 +64,7 @@ private:
   State* s24;
   State* s25;
   State* s26;
+  State* s29;
   State* s211;
   State* s221;
   State* s231;

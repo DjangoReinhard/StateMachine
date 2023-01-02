@@ -9,6 +9,7 @@ Implementation of a hierarchical state machine
  - EndingState - is used as endpoint of a process
  - HistoryState - is used as conditial guard in the sense, that state to check must be an entry of statemachines history (has to be active in the past). HistoryStateTransition may form a positive or negative condition
  - OrphanState - is used to bypass hierarchy. As orphans have no parents, an OrphanState will never ask a parent for state transitions.
+ - ReturnState - this state is an OrphanState that can be activated from different states and the statemachine may return to the state, where this state has been activated from
 
 ### **StateMachine** is build as a library with unittests and sample application.
 
@@ -47,6 +48,8 @@ Implementation of a hierarchical state machine
 - **S2** is the first button, that needs to be pressed. Callback of the bound event enables some more buttons.
 
 - **OS211** is an orphaned state, which can be enabled from active **S21** only. Once enabled, **S21** is the only valid state to leave **S211** (similar is true for *OS221*).
+
+- **RS** is an return state, which may be activated from **S21** or **S22**. **RS** state will block any state change request other than **RS** again. When pressed the second time, **RS** will return to **S21** or **S22** depending on which state has been active before pressing **RS** the first time
 
 - **HS23** is a history state, which means, that all states starting with "23" can be activated only when HS23 has been pushed before.
 

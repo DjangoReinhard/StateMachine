@@ -39,8 +39,9 @@ public:
   StateMachine();
   virtual ~StateMachine();
 
-  void dispatch(const StateRequestEvent& e);
-  void setInitialState(State* state);
+  State*  dispatch(const StateRequestEvent& e);
+  State*  stateReturn();
+  void    setInitialState(State* state);
 
   virtual State* currentState() const;
 
@@ -52,8 +53,5 @@ protected:
 private:
   State*       current;
   QSet<State*> history;
-//  friend class ChildTests;
-//  friend class BasicsTests;
-//  friend class HistoryTests;
   };
 #endif

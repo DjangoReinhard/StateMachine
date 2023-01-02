@@ -229,7 +229,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>ES2342</string>
+             <string>S2342</string>
             </property>
            </widget>
           </item>
@@ -329,6 +329,16 @@
       </property>
       <property name="text">
        <string>S25</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="pbLF">
+      <property name="text">
+       <string>RS</string>
       </property>
       <property name="checkable">
        <bool>false</bool>

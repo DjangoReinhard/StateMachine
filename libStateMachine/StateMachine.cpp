@@ -23,9 +23,10 @@
  * 
  * **************************************************************************
  */
-#include "StateMachine.h"
-#include "StateTransition.h"
-#include "EndingState.h"
+#include <StateMachine.h>
+#include <StateTransition.h>
+#include <EndingState.h>
+#include <ReturnState.h>
 #include <QDebug>
 #include <stdexcept>
 
@@ -71,7 +72,7 @@ void StateMachine::setUnSeen(State *state) {
   }
 
 
-void StateMachine::dispatch(const StateRequestEvent& e) {
+State* StateMachine::dispatch(const StateRequestEvent& e) {
   if (!current) throw std::logic_error("missing state!");
 
   qDebug() << "event #" << e.code() << "received at state \"" << current->name() << "\"";
@@ -98,4 +99,20 @@ void StateMachine::dispatch(const StateRequestEvent& e) {
                          // never have a predecessor!
 
   qDebug() << "after event-processing, state is now \"" << current->name() << "\"";
+
+  return current;
+  }
+
+
+State* StateMachine::stateReturn() {
+  ReturnState* rs = dynamic_cast<ReturnState*>(current);
+
+  if (rs && rs->predecessor) {
+     StateTransition st(0, rs, rs->predecessor);
+
+     current = rs->executeTransition(&st);
+     }
+  qDebug() << "after event-processing, state is now \"" << current->name() << "\"";
+
+  return current;
   }

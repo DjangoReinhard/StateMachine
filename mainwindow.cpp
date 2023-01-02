@@ -28,7 +28,7 @@
 #include <StateMachine.h>
 #include <EndingState.h>
 #include <HistoryState.h>
-#include <OrphanState.h>
+#include <ReturnState.h>
 #include <StateTransition.h>
 #include <HistoryStateTransition.h>
 #include <QPushButton>
@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
  , s24(nullptr)
  , s25(nullptr)
  , s26(nullptr)
+ , s29(nullptr)
  , s231(nullptr)
  , s232(nullptr)
  , s233(nullptr)
@@ -80,6 +81,7 @@ MainWindow::~MainWindow() {
   delete s232;
   delete s233;
   delete s234;
+  delete s29;
   delete s26;
   delete s25;
   delete s24;
@@ -96,6 +98,7 @@ void MainWindow::connectUI() {
   connect(ui->pb22,   &QPushButton::clicked, sm, [=]{ sm->dispatch(22); });
   connect(ui->pb23,   &QPushButton::clicked, sm, [=]{ sm->dispatch(23); });
   connect(ui->pb25,   &QPushButton::clicked, sm, [=]{ sm->dispatch(25); });
+  connect(ui->pbLF,   &QPushButton::clicked, this, &MainWindow::toggleReturnState);
   connect(ui->pb211,  &QPushButton::clicked, sm, [=]{ sm->dispatch(211); });
   connect(ui->pb221,  &QPushButton::clicked, sm, [=]{ sm->dispatch(221); });
   connect(ui->pb241,  &QPushButton::clicked, sm, [=]{ sm->dispatch(241); });
@@ -109,7 +112,7 @@ void MainWindow::connectUI() {
   connect(ui->pb233,  &QPushButton::clicked, sm, [=]{ sm->dispatch(233); });
   connect(ui->pb234,  &QPushButton::clicked, sm, [=]{ sm->dispatch(234); });
   connect(ui->pb2341, &QPushButton::clicked, sm, [=]{ sm->dispatch(2341); });
-  connect(ui->pb2342, &QPushButton::clicked, sm, [=]{ sm->dispatch(2342); });
+  connect(ui->pb2342, &QPushButton::clicked, sm, [=]{ sm->dispatch(2342); });  
 
   connect(s2,  &State::onEntry, this, &MainWindow::s2Properties);
   connect(s23, &State::onEntry, this, &MainWindow::s23Properties);
@@ -125,6 +128,7 @@ void MainWindow::createStateMachine() {
   s24   = new State("S24", s2);           // virtual
   s25   = new State("S25", s2);
   s26   = new State("S26", s2);
+  s29   = new ReturnState("S29",  s2);
   s211  = new OrphanState("S211", s21);
   s221  = new OrphanState("S221", s22);
   s231  = new State("S231", s23);         // virtual
@@ -166,7 +170,9 @@ void MainWindow::createStateMachine() {
   hst = new HistoryStateTransition(23, s21, s23, s23, false);
   s2->addTransition(hst);
 
+  s21->addTransition(29,  s29);
   s21->addTransition(211, s211);
+  s22->addTransition(29,  s29);
   s22->addTransition(221, s221);
   s23->addTransition(2311, s2311);
   s23->addTransition(2312, s2312);
@@ -251,4 +257,12 @@ void MainWindow::s23Properties(StateTransition* trans) {
   ui->pb2342->setEnabled(true);
   ui->pb233->setEnabled(true);
   ui->pb234->setEnabled(true);
+  }
+
+
+void MainWindow::toggleReturnState(bool active) {
+  if (sm->currentState() == s29)
+     sm->stateReturn();
+  else
+     sm->dispatch(29);
   }

@@ -125,8 +125,8 @@ void MainWindow::createStateMachine() {
   s24   = new State("S24", s2);           // virtual
   s25   = new State("S25", s2);
   s26   = new State("S26", s2);
-  s211  = new OrphanState("S211");
-  s221  = new OrphanState("S221");
+  s211  = new OrphanState("S211", s21);
+  s221  = new OrphanState("S221", s22);
   s231  = new State("S231", s23);         // virtual
   s232  = new State("S232", s23);
   s233  = new State("S233", s23);
@@ -138,7 +138,7 @@ void MainWindow::createStateMachine() {
   s245  = new State("S245", s24);
   s2311 = new State("S2311", s231);
   s2312 = new State("S2312", s231);
-  s2341 = new OrphanState("S2341");
+  s2341 = new OrphanState("S2341", s234);
   s2342 = new EndingState("S2342", s234);
 
   sm->addTransition(2,   s2);

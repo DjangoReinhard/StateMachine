@@ -114,6 +114,8 @@ State* State::executeTransition(StateTransition* trans) {
         states->append(tmp);
         tmp = tmp->parentState;
         }
+  if (!states->size() && tmp && tmp == ancestor) states->append(tmp);
+
   for (int i=states->size() - 1; i >= 0; --i) {
       qDebug() << "\tenter state " << states->at(i)->name();
       // vomits enter signal of each new state

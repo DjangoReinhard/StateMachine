@@ -117,11 +117,18 @@ State* StateMachine::stateReturn() {
         tmp = tmp->parentState;
         rs  = dynamic_cast<ReturnState*>(tmp);
         }
-  if (rs && rs->predecessor) {
-     StateTransition st(0, tmp, rs->predecessor);
+  if (rs) {
+     if (rs->predecessor) {
+        StateTransition st(0, tmp, rs->predecessor);
 
-     rs->predecessor = nullptr; // enable change of predecessor
-     current = rs->executeTransition(&st);
+        rs->predecessor = nullptr; // enable change of predecessor
+        current = rs->executeTransition(&st);
+        }
+     else if (rs->parentState) {
+        StateTransition st(0, tmp, rs->parentState);
+
+        current = rs->executeTransition(&st);
+        }
      }
   qDebug() << "after event-processing, state is now \"" << current->name() << "\"";
 

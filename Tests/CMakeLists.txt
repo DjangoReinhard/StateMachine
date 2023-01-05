@@ -5,6 +5,7 @@ project(ChildTests LANGUAGES CXX)
 project(HistoryTests LANGUAGES CXX)
 project(OrphanTests LANGUAGES CXX)
 project(EndingTests LANGUAGES CXX)
+project(ReturnTests LANGUAGES CXX)
 
 enable_testing()
 
@@ -69,6 +70,16 @@ add_executable(EndingTests
 add_test(NAME EndingTests COMMAND EndingTests)
 target_include_directories(EndingTests PRIVATE ../libStateMachine)
 target_link_libraries(EndingTests
+                      PRIVATE Qt${QT_VERSION_MAJOR}::Test
+                      PRIVATE StateMachine
+                      )
+
+add_executable(ReturnTests
+               ReturnTests.cpp
+               )
+add_test(NAME ReturnTests COMMAND ReturnTests)
+target_include_directories(ReturnTests PRIVATE ../libStateMachine)
+target_link_libraries(ReturnTests
                       PRIVATE Qt${QT_VERSION_MAJOR}::Test
                       PRIVATE StateMachine
                       )

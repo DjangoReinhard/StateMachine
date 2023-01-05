@@ -34,7 +34,8 @@
 class HistoryState: public State
 {
 public:
-  HistoryState(const QString name, State* parentState = nullptr, QObject* parent = nullptr);
+  HistoryState(int id, State* parentState = nullptr, QObject* parent = nullptr);
+  HistoryState(int id, const QString name, State* parentState = nullptr, QObject* parent = nullptr);
   virtual ~HistoryState();
 
   void reset();

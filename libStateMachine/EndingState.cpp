@@ -26,8 +26,13 @@
 #include <EndingState.h>
 
 
-EndingState::EndingState(const QString& name, State* parentState, QObject *parent)
- : State(name, parentState, parent) {
+EndingState::EndingState(int id, State* parentState, QObject *parent)
+ : State(id, parentState, parent) {
+  }
+
+
+EndingState::EndingState(int id, const QString& name, State* parentState, QObject *parent)
+ : State(id, name, parentState, parent) {
   }
 
 

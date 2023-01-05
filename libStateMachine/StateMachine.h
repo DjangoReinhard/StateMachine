@@ -43,10 +43,10 @@ public:
   State*  stateReturn();
   void    setInitialState(State* state);
 
+  virtual bool   haveSeen(State* state) const override;
   virtual State* currentState() const;
 
 protected:
-  virtual bool haveSeen(State* state) const override;
   virtual void setSeen(State* state) override;
   virtual void setUnSeen(State* state) override;
 

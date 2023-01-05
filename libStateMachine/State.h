@@ -55,12 +55,15 @@ class State : public QObject
 {
   Q_OBJECT
 public:
-  State(const QString& name, State* parentState = nullptr, QObject* parent = nullptr);
+  State(int id, State* parentState = nullptr, QObject* parent = nullptr);
+  State(int id, const QString& name, State* parentState = nullptr, QObject* parent = nullptr);
   virtual ~State();
 
   void addTransition(int st, State* targetState);
+  void addTransition(State* targetState);
   void addTransition(StateTransition* trans);
 
+  int     id() const;
   QString name() const;
 
   virtual State*           executeTransition(StateTransition* trans);
@@ -82,6 +85,7 @@ protected:
   QHash<int, StateTransition*> transitions;
 
 private:
+  int     stateID;
   QString stateName;
   State*  parentState;
   friend class StateMachine;

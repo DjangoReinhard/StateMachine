@@ -26,8 +26,13 @@
 #include <OrphanState.h>
 
 
-OrphanState::OrphanState(const QString& name, State* parentState, QObject *parent)
- : State(name, parentState, parent) {
+OrphanState::OrphanState(int id, State* parentState, QObject *parent)
+ : State(id, parentState, parent) {
+  }
+
+
+OrphanState::OrphanState(int id, const QString& name, State* parentState, QObject *parent)
+ : State(id, name, parentState, parent) {
   }
 
 

@@ -59,12 +59,12 @@ HistoryTests::~HistoryTests() {
 
 void HistoryTests::init() {
   sm = new StateMachine();
-  State* s1  = new State("S1", sm);
-  State* s2  = new State("S2", sm);
-  State* s21 = new State("S21", s2);
-  State* s22 = new State("S22", s2);
-  State* s23 = new HistoryState("S23", s2);
-  State* s24 = new State("S24", s2);
+  State* s1  = new State(1, "S1", sm);
+  State* s2  = new State(2, "S2", sm);
+  State* s21 = new State(21, "S21", s2);
+  State* s22 = new State(22, "S22", s2);
+  State* s23 = new HistoryState(23, "S23", s2);
+  State* s24 = new State(24, "S24", s2);
 
   sm->setInitialState(s1);
   s1->addTransition(21, s21);

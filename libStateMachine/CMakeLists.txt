@@ -7,6 +7,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS
              Core
@@ -46,8 +47,8 @@ target_link_libraries(StateMachine
                       PRIVATE Qt${QT_VERSION_MAJOR}::Gui
                       PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
                       )
-target_compile_definitions(StateMachine
-                           PRIVATE LIBSTATEMACHINE_LIBRARY
+target_include_directories(StateMachine
+                           INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
                            )
 if(COMMAND qt_create_translation)
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

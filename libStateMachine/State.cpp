@@ -28,8 +28,17 @@
 #include <QDebug>
 
 
-State::State(const QString& name, State* parentState, QObject* parent)
+State::State(int id, State* parentState, QObject* parent)
  : QObject(parent)
+ , stateID(id)
+ , parentState(parentState)
+ , predecessor(nullptr) {
+  }
+
+
+State::State(int id, const QString& name, State* parentState, QObject* parent)
+ : QObject(parent)
+ , stateID(id)
  , stateName(name)
  , parentState(parentState)
  , predecessor(nullptr) {
@@ -47,6 +56,26 @@ State::~State() {
  * @param state                - target state
  */
 void State::addTransition(int eventCode, State* state) {
+  assert(state != nullptr);
+  if (!transitions.contains(eventCode))
+     transitions.insert(eventCode, new StateTransition(eventCode, this, state));
+  else {
+     delete transitions[eventCode];
+     transitions.insert(eventCode, new StateTransition(eventCode, this, state));
+     }
+  }
+
+
+/**
+ * @brief State::addTransition - simple state transitions consist of eventCode
+ *                               and target state
+ * @param eventCode            - the code to request this state change
+ * @param state                - target state
+ */
+void State::addTransition(State* state) {
+  assert(state != nullptr);
+  int eventCode = state->id();
+
   if (!transitions.contains(eventCode))
      transitions.insert(eventCode, new StateTransition(eventCode, this, state));
   else {
@@ -62,6 +91,7 @@ void State::addTransition(int eventCode, State* state) {
  * @param trans                - the state transition to register
  */
 void State::addTransition(StateTransition* trans) {
+  assert(trans != nullptr);
   if (transitions.contains(trans->eventCode()))
      delete transitions[trans->eventCode()];
   transitions.insert(trans->eventCode(), trans);
@@ -156,7 +186,7 @@ StateTransition* State::handleEvent(const StateRequestEvent& e) {
  * @return  true if state is descendant of ourself
  */
 bool State::hasChildState(State *state) {
-  if (!state) return false;
+  assert(state != nullptr);
   State* tmp = state;
 
   while ((tmp = tmp->parentState)) {
@@ -166,12 +196,18 @@ bool State::hasChildState(State *state) {
   }
 
 
+int State::id() const {
+  return stateID;
+  }
+
+
 QString State::name() const {
   return stateName;
   }
 
 
 bool State::haveSeen(State *state) const {
+  assert(state != nullptr);
   //route function call to StateMachine
   if (parentState) return parentState->haveSeen(state);
   return false;
@@ -179,6 +215,8 @@ bool State::haveSeen(State *state) const {
 
 
 void State::setPredecessor(State *state) {
+  if (predecessor) return; // already have one!
+  qDebug() << "\t\tchange predecessor of " << name() << "to" << state->name();
   predecessor = state;
   }
 
@@ -195,10 +233,12 @@ void State::setUnSeen(State* state) {
   }
 
 void State::enterState(StateTransition* trans) {
+  assert(trans != nullptr);
   emit onEntry(trans);
   }
 
 
 void State::leaveState(StateTransition* trans) {
+  assert(trans != nullptr);
   emit onExit(trans);
   }

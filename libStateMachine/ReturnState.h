@@ -31,7 +31,8 @@
 class ReturnState : public OrphanState
 {
 public:
-  explicit ReturnState(const QString& name, State* parentState = nullptr, QObject *parent = nullptr);
+  explicit ReturnState(int id, State* parentState = nullptr, QObject *parent = nullptr);
+  explicit ReturnState(int id, const QString& name, State* parentState = nullptr, QObject *parent = nullptr);
   virtual ~ReturnState();
   };
 #endif // RETURNSTATE_H

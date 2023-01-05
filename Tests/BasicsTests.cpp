@@ -57,9 +57,9 @@ BasicsTests::~BasicsTests() {
 
 void BasicsTests::initTestCase() {
   sm = new StateMachine();
-  State* s1 = new State("S1", sm);
-  State* s2 = new State("S2", sm);
-  State* s3 = new State("S3", sm);
+  State* s1 = new State(1, "S1", sm);
+  State* s2 = new State(2, "S2", sm);
+  State* s3 = new State(3, "S3", sm);
 
   sm->setInitialState(s1);
   s1->addTransition(2, s2);

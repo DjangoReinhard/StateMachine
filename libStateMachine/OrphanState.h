@@ -31,7 +31,8 @@
 class OrphanState : public State
 {
 public:
-  explicit OrphanState(const QString& name, State* parentState = nullptr, QObject *parent = nullptr);
+  explicit OrphanState(int id, State* parentState = nullptr, QObject *parent = nullptr);
+  explicit OrphanState(int id, const QString& name, State* parentState = nullptr, QObject *parent = nullptr);
   virtual ~OrphanState();
 
   virtual StateTransition* handleEvent(const StateRequestEvent &e) override;

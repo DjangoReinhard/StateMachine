@@ -31,7 +31,8 @@
 class EndingState : public State
 {
 public:
-  explicit EndingState(const QString& name, State* parentState = nullptr, QObject *parent = nullptr);
+  explicit EndingState(int id, State* parentState = nullptr, QObject *parent = nullptr);
+  explicit EndingState(int id, const QString& name, State* parentState = nullptr, QObject *parent = nullptr);
   virtual ~EndingState();
   };
 #endif // ENDINGSTATE_H

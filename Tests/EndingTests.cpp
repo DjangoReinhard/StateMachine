@@ -56,12 +56,12 @@ EndingTests::~EndingTests() {
 
 void EndingTests::initTestCase() {
   sm = new StateMachine();
-  State* s1   = new State("S1", sm);
-  State* s2   = new State("S2", sm);
-  State* s11  = new State("S11", s1);
-  State* s21  = new State("S21", s2);
-  State* s211 = new State("S211", s21);
-  State* s212 = new EndingState("S212", s21);
+  State* s1   = new State(1, "S1", sm);
+  State* s2   = new State(2, "S2", sm);
+  State* s11  = new State(11, "S11", s1);
+  State* s21  = new State(21, "S21", s2);
+  State* s211 = new State(211, "S211", s21);
+  State* s212 = new EndingState(212, "S212", s21);
 
   sm->setInitialState(s11);
   s1->addTransition(21, s21);

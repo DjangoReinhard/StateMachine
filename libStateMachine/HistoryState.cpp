@@ -26,8 +26,13 @@
 #include "HistoryState.h"
 
 
-HistoryState::HistoryState(const QString name, State *parentState, QObject *parent)
-  : State(name, parentState, parent) {
+HistoryState::HistoryState(int id, State *parentState, QObject *parent)
+  : State(id, parentState, parent) {
+  }
+
+
+HistoryState::HistoryState(int id, const QString name, State *parentState, QObject *parent)
+  : State(id, name, parentState, parent) {
   }
 
 

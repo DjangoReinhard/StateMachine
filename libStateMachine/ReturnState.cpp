@@ -26,8 +26,13 @@
 #include <ReturnState.h>
 
 
-ReturnState::ReturnState(const QString& name, State* parentState, QObject *parent)
- : OrphanState(name, parentState, parent) {
+ReturnState::ReturnState(int id, State* parentState, QObject *parent)
+ : OrphanState(id, parentState, parent) {
+  }
+
+
+ReturnState::ReturnState(int id, const QString& name, State* parentState, QObject *parent)
+ : OrphanState(id, name, parentState, parent) {
   }
 
 

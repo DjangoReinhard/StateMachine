@@ -57,12 +57,12 @@ ChildTests::~ChildTests() {
 
 void ChildTests::initTestCase() {
   sm = new StateMachine();
-  State* s1  = new State("S1", sm);
-  State* s2  = new State("S2", sm);
-  State* s3  = new State("S3", sm);
-  State* s11 = new State("S11", s1);
-  State* s21 = new State("S21", s2);
-  State* s31 = new State("S31", s3);
+  State* s1  = new State(1, "S1", sm);
+  State* s2  = new State(2, "S2", sm);
+  State* s3  = new State(3, "S3", sm);
+  State* s11 = new State(11, "S11", s1);
+  State* s21 = new State(21, "S21", s2);
+  State* s31 = new State(31, "S31", s3);
 
   sm->setInitialState(s11);
   s1->addTransition(21, s21);

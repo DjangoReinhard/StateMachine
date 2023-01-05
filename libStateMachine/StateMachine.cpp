@@ -32,7 +32,7 @@
 
 
 StateMachine::StateMachine()
- : State("StateMachine")
+ : State(0, "StateMachine")
  , current(nullptr) {
   current = this;
   }
@@ -48,7 +48,12 @@ State* StateMachine::currentState() const {
 
 
 void StateMachine::setInitialState(State* s) {
-  current = s;
+  if (s) {
+     StateTransition* st = handleEvent(s->id());
+
+     if (!st) addTransition(s);
+     dispatch(s->id());
+     }
   }
 
 
@@ -105,11 +110,17 @@ State* StateMachine::dispatch(const StateRequestEvent& e) {
 
 
 State* StateMachine::stateReturn() {
-  ReturnState* rs = dynamic_cast<ReturnState*>(current);
+  ReturnState* rs  = dynamic_cast<ReturnState*>(current);
+  State*       tmp = current;
 
+  while (!rs && tmp->parentState) {
+        tmp = tmp->parentState;
+        rs  = dynamic_cast<ReturnState*>(tmp);
+        }
   if (rs && rs->predecessor) {
-     StateTransition st(0, rs, rs->predecessor);
+     StateTransition st(0, tmp, rs->predecessor);
 
+     rs->predecessor = nullptr; // enable change of predecessor
      current = rs->executeTransition(&st);
      }
   qDebug() << "after event-processing, state is now \"" << current->name() << "\"";

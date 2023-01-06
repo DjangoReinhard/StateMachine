@@ -1,11 +1,11 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
- *  project:    AppStateMachine
- *  subproject: main application
- *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
+ *  file:       ValueModel.h
+ *  project:    FalconView
+ *  subproject: libService
+ *  purpose:    services for GUI
+ *  created:    9.1.2022 by Django Reinhard
  *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
@@ -23,35 +23,28 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#ifndef VALUEMODEL_H
+#define VALUEMODEL_H
+#include <QObject>
+#include <QVariant>
 
 
-class MainWindow : public QMainWindow
+class ValueModel : public QObject
 {
   Q_OBJECT
 public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
+  explicit ValueModel(const QString& name, const QVariant& value = 0);
 
-public slots:
-  void refreshCounter();
+  void     setValue(const QVariant& value);
+  QVariant getValue() const { return v; };
+  QString  getName()  const { return n; };
+  void     dump() const;
 
-protected:
-  void connectUI();
-  void createToolbars();
+signals:
+  void valueChanged(const QVariant& newValue);
 
 private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
+  QVariant v;
+  QString  n;
   };
-#endif // MAINWINDOW_H
+#endif // VALUEMODEL_H

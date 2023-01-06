@@ -23,8 +23,8 @@
  * 
  * **************************************************************************
  */
-#include "mainwindow.h"
-
+#include <mainwindow.h>
+#include <MultiStateAction.h>
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
@@ -35,6 +35,8 @@ int main(int argc, char *argv[]) {
   QTranslator       translator;
   const QStringList uiLanguages = QLocale::system().uiLanguages();
 
+//  MultiStateAction::setInactiveIcon(QIcon(":/res/SK_NOP.png"));
+  MultiStateAction::setInactiveIcon(QIcon(":/res/SK_DisabledIcon.png"));
   for (const QString &locale : uiLanguages) {
       const QString baseName = "StateMachine_" + QLocale(locale).name();
 

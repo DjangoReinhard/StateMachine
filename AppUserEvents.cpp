@@ -1,12 +1,12 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
+ *  file:       AppUserEvents.cpp
  *  project:    AppStateMachine
  *  subproject: main application
  *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
- *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
+ *  created:    6.1.2023 by Django Reinhard
+ *  copyright:  (c) 2022 - 2023 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
  *  it under the terms of the GNU General Public License as published by 
@@ -23,35 +23,26 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#include <AppUserEvents.h>
+#define CASE(s) case s: return #s
 
 
-class MainWindow : public QMainWindow
-{
-  Q_OBJECT
-public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
+QString SIAppUserEvents::toString(AppUserEvents v) {
+  switch (v) {
+    CASE(NOPAction);
+    CASE(ErrorSTATE);
+    CASE(MachineSetup);
+    CASE(HALInfo);
+    }
+  return "";
+  }
 
-public slots:
-  void refreshCounter();
+#define CHECK(v) if (s == #v) return v
 
-protected:
-  void connectUI();
-  void createToolbars();
-
-private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
-  };
-#endif // MAINWINDOW_H
+AppUserEvents SIAppUserEvents::parse(const QString& s) {
+  CHECK(NOPAction);
+  CHECK(ErrorSTATE);
+  CHECK(MachineSetup);
+  CHECK(HALInfo);
+  return NOPAction;
+  }

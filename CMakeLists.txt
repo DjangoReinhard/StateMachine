@@ -12,10 +12,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS
              Widgets
+             Gui
              LinguistTools
              )
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
              Widgets
+             Gui
              LinguistTools
              )
 
@@ -23,17 +25,22 @@ set(TS_FILES AppStateMachine_de_DE.ts)
 
 set(PROJECT_SOURCES
     main.cpp
-    mainwindow.cpp
     mainwindow.h
+    mainwindow.cpp
+    MainControl.h
+    MainControl.cpp
     mainwindow.ui
+    AppUserEvents.h
+    AppUserEvents.cpp
     ${TS_FILES}
     )
 enable_testing()
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(AppStateMachine
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
+  qt_add_executable(AppStateMachine
+                    MANUAL_FINALIZATION
+                    ${PROJECT_SOURCES}
+                    XIcons.qrc
+                    )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET AppStateMachine APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -43,23 +50,24 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 else()
     if(ANDROID)
         add_library(AppStateMachine SHARED
-            ${PROJECT_SOURCES}
+                    ${PROJECT_SOURCES}
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(AppStateMachine
-            ${PROJECT_SOURCES}
+                       ${PROJECT_SOURCES}
         )
     endif()
-
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_include_directories(AppStateMachine PRIVATE libStateMachine)
 target_link_libraries(AppStateMachine
                       PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+                      PRIVATE Common
                       PRIVATE StateMachine
+                      PRIVATE Service
+                      PRIVATE GUI
                       )
 
 set_target_properties(AppStateMachine PROPERTIES
@@ -70,12 +78,20 @@ set_target_properties(AppStateMachine PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-install(TARGETS AppStateMachine
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-add_subdirectory(Tests)
+add_subdirectory(libCommon)
+add_subdirectory(libGUI)
+add_subdirectory(libService)
 add_subdirectory(libStateMachine)
+add_subdirectory(pluginA)
+add_subdirectory(pluginB)
+add_subdirectory(Tests)
+
+install(TARGETS AppStateMachine Common PluginA PluginB
+        BUNDLE  DESTINATION .
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        )
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(AppStateMachine)

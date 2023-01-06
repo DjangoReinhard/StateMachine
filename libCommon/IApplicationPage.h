@@ -1,11 +1,11 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
- *  project:    AppStateMachine
+ *  file:       CenterPageInterface.h
+ *  project:    FalconView
  *  subproject: main application
- *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
+ *  purpose:    ui frontend for linuxCNC                          
+ *  created:    22.1.2022 by Django Reinhard
  *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
@@ -23,35 +23,24 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
+#ifndef CENTERPAGEINTERFACE_H
+#define CENTERPAGEINTERFACE_H
+#include <QtPlugin>
+class QAction;
+
+
+class IApplicationPage
+{
+public:
+  virtual ~IApplicationPage() = default;
+
+  virtual QAction* viewAction()     = 0;
+  virtual QString  pageName() const = 0;
+  };
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+#define IApplicationPage_iid "de.schwarzrot.FalconView.IApplicationPage/0.1"
+Q_DECLARE_INTERFACE(IApplicationPage, IApplicationPage_iid)
 QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
 
-
-class MainWindow : public QMainWindow
-{
-  Q_OBJECT
-public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
-
-public slots:
-  void refreshCounter();
-
-protected:
-  void connectUI();
-  void createToolbars();
-
-private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
-  };
-#endif // MAINWINDOW_H
+#endif // CENTERPAGEINTERFACE_H

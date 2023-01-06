@@ -1,12 +1,12 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
+ *  file:       ToolBar.h
  *  project:    AppStateMachine
  *  subproject: main application
  *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
- *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
+ *  created:    5.1.2023 by Django Reinhard
+ *  copyright:  (c) 2022 - 2023 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
  *  it under the terms of the GNU General Public License as published by 
@@ -23,35 +23,25 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#ifndef TOOLBAR_H
+#define TOOLBAR_H
+#include <QDockWidget>
+class QAction;
+class ActionButton;
 
 
-class MainWindow : public QMainWindow
+class ToolBar : public QDockWidget
 {
   Q_OBJECT
 public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
+  explicit ToolBar(const QString& name, QWidget *parent = nullptr);
+  virtual ~ToolBar();
 
-public slots:
-  void refreshCounter();
-
-protected:
-  void connectUI();
-  void createToolbars();
+  void setAction(int i, QAction* a);
+  void setupToolBar();
 
 private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
+  QList<ActionButton*> buttons;
+  QWidget* tw;
   };
-#endif // MAINWINDOW_H
+#endif // TOOLBAR_H

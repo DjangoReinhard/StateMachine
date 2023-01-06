@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource prefix="/">
+   <file>res/SK_HAL.png</file>
+   <file>res/SK_HAL_active.png</file>
+ </qresource>
+</RCC>

@@ -1,11 +1,11 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
- *  project:    AppStateMachine
- *  subproject: main application
- *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
+ *  file:       ValueManager.h
+ *  project:    FalconView
+ *  subproject: libService
+ *  purpose:    services for GUI
+ *  created:    9.1.2022 by Django Reinhard
  *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
@@ -23,35 +23,28 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#ifndef VALUEMANAGER_H
+#define VALUEMANAGER_H
+#include <ValueModel.h>
+#include <QString>
+class AbstractCenterWidget;
+class ValueHolder;
 
 
-class MainWindow : public QMainWindow
+class ValueManager
 {
-  Q_OBJECT
 public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
+  ValueManager();
 
-public slots:
-  void refreshCounter();
-
-protected:
-  void connectUI();
-  void createToolbars();
+  ValueModel* getModel(const QString& name, const QVariant& defaultValue = QVariant());
+  QVariant    getValue(const QString& name);
+  void        setValue(const QString& name, const QVariant& value);
+  void        dump();
 
 private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
+  ValueManager(void* p);
+  static ValueHolder* instance;
+  friend class AbstractCenterWidget;
+  friend class PluginPageFactory;
   };
-#endif // MAINWINDOW_H
+#endif // VALUEMANAGER_H

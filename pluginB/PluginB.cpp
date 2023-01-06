@@ -1,12 +1,12 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
+ *  file:       PluginB.cpp
  *  project:    AppStateMachine
  *  subproject: main application
  *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
- *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
+ *  created:    6.1.2023 by Django Reinhard
+ *  copyright:  (c) 2022 - 2023 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
  *  it under the terms of the GNU General Public License as published by 
@@ -23,35 +23,22 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#include <PluginB.h>
+#include <MultiStateAction.h>
 
 
-class MainWindow : public QMainWindow
-{
-  Q_OBJECT
-public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
+PluginB::PluginB(QWidget* parent)
+ : QWidget(parent) {
+  }
 
-public slots:
-  void refreshCounter();
 
-protected:
-  void connectUI();
-  void createToolbars();
+QAction* PluginB::viewAction() {
+  return new MultiStateAction(QIcon(":/res/SK_Machine.png")
+                            , QIcon(":/res/SK_Machine_active.png")
+                            , pageName());
+  }
 
-private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
-  };
-#endif // MAINWINDOW_H
+
+QString PluginB::pageName() const {
+  return "MachineSetup";
+  }

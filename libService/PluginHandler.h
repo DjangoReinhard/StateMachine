@@ -1,12 +1,12 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
+ *  file:       PluginHandler.h
  *  project:    AppStateMachine
  *  subproject: main application
  *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
- *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
+ *  created:    6.1.2023 by Django Reinhard
+ *  copyright:  (c) 2022 - 2023 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
  *  it under the terms of the GNU General Public License as published by 
@@ -23,35 +23,21 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#ifndef PLUGINHANDLER_H
+#define PLUGINHANDLER_H
+#include <QDir>
+class QFileInfo;
+class IApplicationPage;
 
 
-class MainWindow : public QMainWindow
+class PluginHandler
 {
-  Q_OBJECT
 public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
+  PluginHandler(const QFileInfo& pluginPath);
 
-public slots:
-  void refreshCounter();
-
-protected:
-  void connectUI();
-  void createToolbars();
+  int loadPlugins(QList<IApplicationPage*>& plugins);
 
 private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
+  QDir pluginDir;
   };
-#endif // MAINWINDOW_H
+#endif // PLUGINHANDLER_H

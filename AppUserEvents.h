@@ -1,12 +1,12 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
+ *  file:       AppUserEvents.h
  *  project:    AppStateMachine
  *  subproject: main application
  *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
- *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
+ *  created:    6.1.2023 by Django Reinhard
+ *  copyright:  (c) 2022 - 2023 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
  *  it under the terms of the GNU General Public License as published by 
@@ -23,35 +23,65 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#ifndef APPUSEREVENTS_H
+#define APPUSEREVENTS_H
+#include <QString>
 
 
-class MainWindow : public QMainWindow
+enum AppUserEvents
 {
-  Q_OBJECT
-public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
-
-public slots:
-  void refreshCounter();
-
-protected:
-  void connectUI();
-  void createToolbars();
-
-private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
+  NOPAction
+, ErrorSTATE
+, EmergencySTOP
+, PowerOFF
+, MachineEnabled
+, EditJob
+, JobChanged
+, EditFile
+, FileChanged
+, OpenFile
+, Search
+, SearchReplace
+, Save
+, Exit
+, Setup
+, ApplicationSetup
+, MachineSetup
+, Fixtures
+, ToolTable
+, ATC
+, View
+, HALInfo
+, ToolManager
+, HomeAllAxis
+, JobProcessing
+, ManualCommands
+, ManualMoves
+, ManualJog
+, WheelJog
+, MeasureTouch
+, ShowMessages
+, JobRunning
+, JobPaused
+, JobFinished
+, Jogging
+, ActiveAxis
+, StepSize
+, ContinuousJogging
+, SingleStep
+, FloodCooling
+, MistCooling
+, SpindleCCW
+, SpindleCW
+, SpindleStop
+, AbsolutePosition
+, RelativePosition
   };
-#endif // MAINWINDOW_H
+
+class SIAppUserEvents
+{
+public:
+  static QString       toString(AppUserEvents v);
+  static AppUserEvents parse(const QString& s);
+  };
+#endif

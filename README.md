@@ -58,3 +58,10 @@ Implementation of a hierarchical state machine
 - **OS2341** is an orphaned state, which can be activated from S234 only. S234 can be left to any other state, but OS2341 can only be left by activating ES2342.
 
 - **ES2342** is an EndingState - which means, on activation S2342 is entered and left to activate parent state S234, which then could be left to any other state.
+
+# Extension with dynamic toolbar
+- **Problem**: Qt implementation of toolbar and toolbutton is too closed to access a toolbutton by its position and replace action of the toolbutton. I wanted a toolbar, that dynamically reflects the possible application states and always have the same (positional) shortcut (F1 - F12).
+
+- **Implementation** uses action based on statemachine and subclassed toolbuttons that allow action replacement. Additionally actions from a plugin should be supported as well.
+
+- you can test it by checking out the branch **dynamic_toolbar**. Used states are slightly modified, so that you can change application state and come back by button-/keypress.

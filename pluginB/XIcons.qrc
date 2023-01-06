@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource prefix="/">
+   <file>res/SK_Machine.png</file>
+   <file>res/SK_Machine_active.png</file>
+ </qresource>
+</RCC>

@@ -1,12 +1,12 @@
 /* 
  * **************************************************************************
  * 
- *  file:       mainwindow.h
+ *  file:       PluginA.h
  *  project:    AppStateMachine
  *  subproject: main application
  *  purpose:    sample for hierarchic state machine with history support
- *  created:    30.12.2022 by Django Reinhard
- *  copyright:  (c) 2022 Django Reinhard -  all rights reserved
+ *  created:    6.1.2023 by Django Reinhard
+ *  copyright:  (c) 2022 - 2023 Django Reinhard -  all rights reserved
  * 
  *  This program is free software: you can redistribute it and/or modify 
  *  it under the terms of the GNU General Public License as published by 
@@ -23,35 +23,23 @@
  * 
  * **************************************************************************
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-class MainControl;
-class PluginHandler;
-class ToolBar;
+#ifndef PLUGINA_H
+#define PLUGINA_H
+#include <PluginA_glob.h>
+#include <IApplicationPage.h>
+#include <QWidget>
 
 
-class MainWindow : public QMainWindow
+class PLUGINA_EXPORT PluginA : public QWidget, public IApplicationPage
 {
   Q_OBJECT
+  Q_INTERFACES(IApplicationPage)
+  Q_PLUGIN_METADATA(IID "IApplicationPage_iid" FILE "PluginA.json")
 public:
-  MainWindow(QWidget *parent = nullptr);
- ~MainWindow();
+  explicit PluginA(QWidget* parent = nullptr);
+  virtual ~PluginA() = default;
 
-public slots:
-  void refreshCounter();
-
-protected:
-  void connectUI();
-  void createToolbars();
-
-private:
-  Ui::MainWindow* ui;  
-  MainControl*    ctrl;
-  ToolBar*        mainTB;  
+  virtual QAction* viewAction() override;
+  virtual QString  pageName() const override;
   };
-#endif // MAINWINDOW_H
+#endif // PLUGINA_H
